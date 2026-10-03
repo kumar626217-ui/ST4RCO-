@@ -24,6 +24,7 @@ const {
 const rootDir = __dirname;
 const audioDir = path.join(rootDir, 'audio');
 const port = Number(process.env.PORT) || 10000;
+const botCount = 20;
 const adminKey = process.env.WEB_ADMIN_KEY;
 const guildId = /^\d{17,20}$/.test(process.env.GUILD_ID || '') ? process.env.GUILD_ID : undefined;
 const logs = [];
@@ -37,7 +38,7 @@ function addLog(level, message) {
 }
 
 function configuredBots() {
-  return Array.from({ length: 10 }, (_, index) => ({
+  return Array.from({ length: botCount }, (_, index) => ({
     number: index + 1,
     token: process.env[`DISCORD_TOKEN_${index + 1}`],
     status: process.env[`DISCORD_TOKEN_${index + 1}`] && !process.env[`DISCORD_TOKEN_${index + 1}`].startsWith('replace-with-') ? 'starting' : 'missing-token',
@@ -257,7 +258,7 @@ async function runWebControl(action, guildIdToControl, channelIdToControl, filen
   const activeBots = bots.filter((bot) => bot.status === 'online');
   if (!activeBots.length) {
     const details = bots.map((bot) => `Bot ${bot.number}: ${bot.statusMessage || bot.status}`).join(' | ');
-    throw new Error(`No bots are online. ${details || 'Add DISCORD_TOKEN_1 through DISCORD_TOKEN_10 in Render.'}`);
+    throw new Error(`No bots are online. ${details || `Add DISCORD_TOKEN_1 through DISCORD_TOKEN_${botCount} in Render.`}`);
   }
   const results = await Promise.all(activeBots.map(async (bot) => {
     try {
@@ -436,6 +437,6 @@ app.listen(port, '0.0.0.0', () => console.log(`Web dashboard listening on port $
 
 const configured = configuredBots();
 const tokenCount = configured.filter((bot) => bot.token && !bot.token.startsWith('replace-with-')).length;
-addLog('info', `Configured ${tokenCount}/10 Discord bot token(s).`);
-if (!tokenCount) addLog('error', 'No Discord bot tokens configured. Add DISCORD_TOKEN_1 through DISCORD_TOKEN_10 in Render.');
+addLog('info', `Configured ${tokenCount}/${botCount} Discord bot token(s).`);
+if (!tokenCount) addLog('error', `No Discord bot tokens configured. Add DISCORD_TOKEN_1 through DISCORD_TOKEN_${botCount} in Render.`);
 configured.forEach(attachBot);

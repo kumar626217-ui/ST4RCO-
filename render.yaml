@@ -26,6 +26,26 @@ services:
         sync: false
       - key: DISCORD_TOKEN_10
         sync: false
+      - key: DISCORD_TOKEN_11
+        sync: false
+      - key: DISCORD_TOKEN_12
+        sync: false
+      - key: DISCORD_TOKEN_13
+        sync: false
+      - key: DISCORD_TOKEN_14
+        sync: false
+      - key: DISCORD_TOKEN_15
+        sync: false
+      - key: DISCORD_TOKEN_16
+        sync: false
+      - key: DISCORD_TOKEN_17
+        sync: false
+      - key: DISCORD_TOKEN_18
+        sync: false
+      - key: DISCORD_TOKEN_19
+        sync: false
+      - key: DISCORD_TOKEN_20
+        sync: false
       - key: WEB_ADMIN_KEY
         sync: false
       - key: GUILD_ID
